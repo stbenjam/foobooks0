@@ -15,6 +15,21 @@
 
     <h1>Foobooks v0</h1>
 
+    <form method='POST'>
+
+        <label for='keyword'>Filter by keyword:</label>
+        <input type='text' name='keyword' id='keyword' value='<?=sanitize($keyword)?>'>
+
+        <input type='submit' class='btn btn-primary btn-small' value='Filter books'>
+
+    </form>
+
+    <?php if (!$hasResults) : ?>
+        <div class='alert alert-warning'>Your keyword did not match any books.</div>
+    <?php elseif ($keyword != '') : ?>
+        <div class='alert alert-info'>You searched for: <strong><?=sanitize($keyword)?></strong></div>
+    <?php endif; ?>
+
     <?php foreach ($books as $title => $book) : ?>
         <div class='book'>
             <h2><?=$title?></h2>
