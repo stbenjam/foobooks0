@@ -13,16 +13,23 @@
 </head>
 <body>
 
-    <h1>Foobooks v0</h1>
+    <h1><a href='/'>Foobooks v0</a></h1>
 
     <form method='GET'>
 
-        <label for='keyword'>Filter by keyword:</label>
-        <input type='text' name='keyword' id='keyword' value='<?=sanitize($keyword)?>'>
+        <div class='form-group'>
+            <label for='keyword'>Filter by keyword:</label>
+            <input type='text' name='keyword' id='keyword' value='<?=sanitize($keyword)?>'>
+        </div>
 
+        <div class='form-group'>
+            <input type='checkbox' name='caseSensitive' id='caseSensitive' <?=$caseSensitiveChecked?>>
+            <label for='caseSensitive'>Case sensitive</label>
+        </div>
 
-
-        <input type='submit' class='btn btn-primary btn-small' value='Filter books'>
+        <div class='form-group'>
+            <input type='submit' class='btn btn-primary btn-small' value='Filter books'>
+        </div>
 
     </form>
 
