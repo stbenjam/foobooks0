@@ -6,8 +6,8 @@ $booksJson = file_get_contents('books.json');
 
 $books = json_decode($booksJson, true);
 
-if (isset($_POST['keyword'])) {
-    $keyword = $_POST['keyword'];
+if (isset($_GET['keyword'])) {
+    $keyword = $_GET['keyword'];
 } else {
     $keyword = '';
 }

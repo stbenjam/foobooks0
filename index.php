@@ -15,10 +15,12 @@
 
     <h1>Foobooks v0</h1>
 
-    <form method='POST'>
+    <form method='GET'>
 
         <label for='keyword'>Filter by keyword:</label>
         <input type='text' name='keyword' id='keyword' value='<?=sanitize($keyword)?>'>
+
+
 
         <input type='submit' class='btn btn-primary btn-small' value='Filter books'>
 
