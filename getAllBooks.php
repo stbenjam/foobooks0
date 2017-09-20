@@ -1,9 +1,10 @@
 <?php
 require('helpers.php');
+require('Book.php');
 
-# Get our data and convert it to a JSON object
-$booksJson = file_get_contents('books.json');
-$books = json_decode($booksJson, true);
+use Foobooks\Book;
+
+$book = new Book('books.json');
 
 # Logical defaults
 $hasResults = true;
@@ -24,21 +25,12 @@ if (isset($_GET['caseSensitive'])) {
 
 # No filtering is necessary if no keyword is specificed
 if ($keyword == '') {
+    $books = $book->getAll();
     return $books;
 }
 
-# Book filtering
-foreach ($books as $title => $book) {
-    if ($caseSensitive) {
-        $match = $title == $keyword;
-    } else {
-        $match = strtolower($title) == strtolower($keyword);
-    }
+$books = $book->getByTitle($keyword, $caseSensitive);
 
-    if (!$match) {
-        unset($books[$title]);
-    }
-}
 
 # Some display-specific helper code
 if (count($books) == 0) {
