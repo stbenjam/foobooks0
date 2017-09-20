@@ -18,12 +18,12 @@
     <form method='GET'>
 
         <div class='form-group'>
-            <label for='keyword'>Filter by keyword:</label>
-            <input type='text' name='keyword' id='keyword' value='<?=sanitize($keyword)?>'>
+            <label for='keyword'><div class='fieldDetails'>(Required)</div> Filter by keyword:</label>
+            <input type='text' name='keyword' id='keyword' value='<?=$form->prefill('keyword', '')?>'>
         </div>
 
         <div class='form-group'>
-            <input type='checkbox' name='caseSensitive' id='caseSensitive' <?=$caseSensitiveChecked?>>
+            <input type='checkbox' name='caseSensitive' id='caseSensitive' <?php if ($form->isChosen('caseSensitive')) echo 'CHECKED' ?> >
             <label for='caseSensitive'>Case sensitive</label>
         </div>
 
@@ -33,22 +33,37 @@
 
     </form>
 
-    <?php if (!$hasResults) : ?>
-        <div class='alert alert-warning'>Your keyword did not match any books.</div>
-    <?php elseif ($keyword != '') : ?>
-        <div class='alert alert-info'>You searched for: <strong><?=sanitize($keyword)?></strong></div>
-    <?php endif; ?>
-
-    <?php foreach ($books as $title => $book) : ?>
-        <div class='book'>
-            <h2><?=$title?></h2>
+    <?php if (!empty($errors)) : ?>
+        <div class='alert alert-danger'>
             <ul>
-                <li>Author: <?=$book['author']?></li>
-                <li>Published year: <?=$book['published']?></li>
+                <?php foreach ($errors as $error) : ?>
+                    <li><?=$error?></li>
+                <?php endforeach; ?>
             </ul>
-            <img src='<?=$book['cover']?>' alt='Book cover for <?=$title?>'>
         </div>
-    <?php endforeach; ?>
+    <?php endif ?>
+
+
+    <?php if ($form->isSubmitted() and empty($errors)) : ?>
+
+        <div class='alert alert-info'>You searched for: <strong><?=sanitize($keyword)?></strong></div>
+
+        <?php if (!$haveResults) : ?>
+            <div class='alert alert-warning'>Your keyword did not match any books.</div
+        <?php endif; ?>
+
+        <?php foreach ($books as $title => $book) : ?>
+            <div class='book'>
+                <h2><?=$title?></h2>
+                <ul>
+                    <li>Author: <?=$book['author']?></li>
+                    <li>Published year: <?=$book['published']?></li>
+                </ul>
+                <img src='<?=$book['cover']?>' alt='Book cover for <?=$title?>'>
+            </div>
+        <?php endforeach; ?>
+
+    <?php endif ?>
 
 </body>
 </html>

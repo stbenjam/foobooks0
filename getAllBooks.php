@@ -1,42 +1,33 @@
 <?php
+require('Form.php');
 require('helpers.php');
 require('Book.php');
 
+use DWA\Form;
 use Foobooks\Book;
 
+$form = new Form($_GET);
 $book = new Book('books.json');
 
-# Logical defaults
-$hasResults = true;
-$caseSensitiveChecked = '';
+if ($form->isSubmitted()) {
+    # Retrieve data from form
+    $keyword = $form->get('keyword', '');
+    $caseSensitive = $form->isChosen('caseSensitive');
 
-# Retrieve data from the form
-if (isset($_GET['keyword'])) {
-    $keyword = $_GET['keyword'];
-} else {
-    $keyword = '';
-}
+    # Validate
+    $errors = $form->validate([
+        'keyword' => 'required'
+    ]);
 
-if (isset($_GET['caseSensitive'])) {
-    $caseSensitive = true;
-} else {
-    $caseSensitive = false;
-}
+    # If there were no validation errors, proceed...
+    if (empty($errors)) {
+        
+        $books = $book->getByTitle($keyword, $caseSensitive);
 
-# No filtering is necessary if no keyword is specificed
-if ($keyword == '') {
-    $books = $book->getAll();
-    return $books;
-}
-
-$books = $book->getByTitle($keyword, $caseSensitive);
-
-
-# Some display-specific helper code
-if (count($books) == 0) {
-    $hasResults = false;
-}
-
-if ($caseSensitive) {
-    $caseSensitiveChecked = 'CHECKED';
+        if ((count($books) == 0)) {
+            $haveResults = false;
+        } else {
+            $haveResults = true;
+        }
+    }
 }
